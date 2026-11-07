@@ -203,11 +203,12 @@ h1 {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 18px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35), 0 0 35px rgba(139, 92, 246, 0.12);
 }
 
 .guide {
@@ -268,29 +269,32 @@ h1 {
 }
 
 .chat-head {
-  padding: 10px 10px;
-  border-bottom: 1px solid var(--line);
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .profile {
   display: flex;
   align-items: center;
-  gap: 10px
+  gap: 9px;
 }
 
 .avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
-  background: #e8efff;
-  color: var(--blue);
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #ffffff;
   display: grid;
   place-items: center;
-  font-size: 19px
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
 }
 
 .profile strong {
@@ -338,18 +342,23 @@ h1 {
 }
 
 .bubble {
-  max-width: min(83%, 460px);
-  padding: 11px 14px;
-  border-radius: 14px 14px 14px 4px;
-  background: #f0f4fa;
+  max-width: min(85%, 460px);
+  padding: 12px 16px;
+  border-radius: 16px 16px 16px 4px;
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
   font-size: 14px;
-  overflow-wrap: anywhere
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .user .bubble {
-  background: #3569e8;
-  color: white;
-  border-radius: 14px 14px 4px 14px
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px 16px 4px 16px;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .bot-actions {
@@ -559,9 +568,9 @@ h1 {
 }
 
 .key-config {
-  padding: 5px 5px 5px;
-  background: #f8faff;
-  border-bottom: 1px solid var(--line)
+  padding: 7px 14px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .key-head {
@@ -569,68 +578,73 @@ h1 {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 7px;
-  flex-wrap: wrap
+  margin-bottom: 0;
+  flex-wrap: wrap;
 }
 
 .key-actions {
   display: flex;
   align-items: center;
-  gap: 5px;
-  flex-wrap: wrap
+  gap: 7px;
+  flex-wrap: wrap;
 }
 
 .api-status-badge {
   font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 6px;
+  font-weight: 650;
+  padding: 3px 9px;
+  border-radius: 99px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  transition: all 0.2s ease
+  transition: all 0.2s ease;
 }
 
 .api-status-badge.checking {
   background: #f1f5f9;
   color: #64748b;
-  border: 1px solid #e2e8f0
+  border: 1px solid #e2e8f0;
 }
 
 .api-status-badge.success {
   background: #ecfdf5;
   color: #059669;
-  border: 1px solid #a7f3d0
+  border: 1px solid #a7f3d0;
 }
 
 .api-status-badge.error {
   background: #fef2f2;
   color: #dc2626;
-  border: 1px solid #fecaca
+  border: 1px solid #fecaca;
 }
 
-.key-head label {
-  font-size: 12px;
-  font-weight: 750;
-  color: #38506c
+#info_connect {
+  color: #64748b;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .key-head a,
 .key-action-btn {
   font-size: 11px;
-  font-weight: 700;
-  color: #3569e8;
-  text-decoration: none;
-  background: none;
-  border: none;
-  padding: 0;
+  font-weight: 650;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #e0e7ff;
+  padding: 3px 9px;
+  border-radius: 6px;
   cursor: pointer;
-  font-family: inherit
+  font-family: inherit;
+  transition: all 0.15s ease;
 }
 
 .key-head a:hover,
 .key-action-btn:hover {
-  text-decoration: underline
+  background: #e0e7ff;
+  color: #4338ca;
+  text-decoration: none;
 }
 
 .api-input {
@@ -663,54 +677,59 @@ h1 {
 .chat-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .btn-action-outline,
 .btn-action-primary {
   font-size: 11px;
   font-weight: 700;
-  padding: 5px 5px;
-  border-radius: 8px;
+  padding: 6px 11px;
+  border-radius: 99px;
   cursor: pointer;
   font-family: inherit;
   display: inline-flex;
   align-items: center;
-  gap: 1px;
-  transition: all 0.15s ease;
+  gap: 5px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   line-height: 1.2;
 }
 
 .btn-action-outline {
-  border: 1px solid #d4deec;
-  background: #fff;
-  color: #3b5270
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .btn-action-outline:hover {
-  background: #f0f4fa;
-  border-color: #bbcada;
-  color: var(--blue)
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
+  transform: translateY(-1px);
 }
 
 .btn-action-primary {
-  border: 1px solid var(--blue);
-  background: var(--blue);
-  color: #fff
+  border: none;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
 }
 
 .btn-action-primary:hover {
-  background: #2552c7
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.45);
+  transform: translateY(-1px);
 }
 
 .history-badge {
-  background: #e2e8f0;
-  color: #334155;
+  background: #ede9fe;
+  color: #6d28d9;
   font-size: 10px;
-  padding: 1px 5px;
-  border-radius: 10px;
-  font-weight: 800
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-weight: 800;
 }
 
 /* Modal Lịch sử */
@@ -943,80 +962,109 @@ h1 {
 
 @media(max-width:768px) {
   .page {
-    padding: 10px 15px
+    padding: 8px 12px 24px;
+  }
+
+  .card {
+    border-radius: 16px;
   }
 
   .brand {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .api-input {
     width: 100%;
-    height: 20px;
+    height: 36px;
     padding: 0 10px;
     border-radius: 9px;
     border: 1px solid #d8e2f0;
     background: #fff;
     color: var(--ink);
     outline: 0;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .top {
-    margin-left: -15px;
-    margin-right: -15px;
-    padding: 5px 15px;
-    margin-bottom: 2px;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 3px 12px;
+    margin-bottom: 8px;
   }
 
   .layout {
-    grid-template-columns: 1fr
+    grid-template-columns: 1fr;
   }
 
   .guide {
-    display: none !important
+    display: none !important;
   }
 
   .chat {
-    order: 1
+    order: 1;
+  }
+
+  .chat-head {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .btn-action-outline,
+  .btn-action-primary {
+    font-size: 10.5px;
+    padding: 5px 9px;
+  }
+
+  .lang-bar {
+    padding: 6px 12px;
+  }
+
+  .key-config {
+    padding: 6px 12px;
   }
 
   .messages {
-    height: 350px
+    height: 380px;
+    padding: 14px 12px;
+  }
+
+  .bubble {
+    font-size: 13.5px;
+    padding: 10px 14px;
   }
 
   .step {
-    margin-bottom: 12px
+    margin-bottom: 12px;
   }
 }
 
 @media(max-width:430px) {
   .input-wrap {
-    flex-wrap: wrap
+    flex-wrap: wrap;
   }
 
   .input-wrap input {
-    flex-basis: 100%
+    flex-basis: 100%;
   }
 
   .input-wrap button {
-    flex: 1
+    flex: 1;
   }
 
   .chat-head {
-    padding: 5px
+    padding: 8px 10px;
   }
 
   .messages {
-    padding: 15px 15px
+    padding: 12px 10px;
   }
 
   .composer {
-    padding: 10px
+    padding: 10px;
   }
 
   .tag {
-    display: none
+    display: none;
   }
 }
 
@@ -1025,9 +1073,9 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 5px 10px;
-  border-bottom: 1px solid var(--line);
-  background: #fafcff;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f1f5f9;
 }
 
 .lang-label {
@@ -1039,28 +1087,27 @@ h1 {
 }
 
 .lang-pill {
-  border: 1px solid #d5e0ee;
-  background: #fff;
-  color: #475569;
-  font-size: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
   font-weight: 650;
-  padding: 2px 15px;
+  padding: 4px 14px;
   border-radius: 99px;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .lang-pill:hover {
-  background: #f0f5ff;
-  border-color: #9cb8f8;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .lang-pill.active {
-  background: #edf4ff;
-  border-color: #3569e8;
-  color: #1e4ec8;
-  box-shadow: 0 2px 8px rgba(53, 105, 232, 0.12);
-  font-weight: 750;
+  background: #ffffff;
+  color: #4f46e5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-weight: 800;
 }
 
 /* Pinyin Keyboard Switcher */
