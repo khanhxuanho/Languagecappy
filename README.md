@@ -178,7 +178,7 @@ Mỗi ngôn ngữ sử dụng một System Instruction chuyên biệt:
 
 ## 6. Tích hợp Firebase Realtime Database (REST API)
 
-- **Firebase Base URL**: `https://englishtalk-17f02-default-rtdb.asia-southeast1.firebasedatabase.app`
+- **Firebase Base URL**: 
 - **Phương thức giao tiếp**: Hoàn toàn dùng HTTP REST (`fetch`), không cần cài đặt thư viện Firebase SDK cồng kềnh.
 
 ### 6.1 Bảng cấu trúc dữ liệu Firebase (Schema)
