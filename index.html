@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Language Cappy AI — luyện nói và sửa câu</title>
+  <link rel="stylesheet" href="languagecappy.css">
+</head>
+
+<body>
+  <!-- Màn hình Đăng nhập bảo vệ phong cách Neon Dark -->
+  <div id="login-screen">
+    <div class="login-container">
+      <div class="login-inner">
+        <div class="login-box">
+          <div class="login-icon">✦</div>
+          <h2 class="login-title">Language Cappy AI</h2>
+          <p class="login-sub">Đăng nhập tài khoản để bắt đầu luyện tập</p>
+
+          <div id="login-error-msg" class="login-error"></div>
+
+          <form id="login-form" class="login-form" onsubmit="return false;">
+            <div class="login-field">
+              <label class="login-label" for="login-username">Tên đăng nhập (Username)</label>
+              <div class="login-input-wrap">
+                <input type="text" id="login-username" class="login-input" placeholder="Nhập tên đăng nhập..."
+                  autocomplete="username" required>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label class="login-label" for="login-password">Mật khẩu (Password)</label>
+              <div class="login-input-wrap">
+                <input type="password" id="login-password" class="login-input" placeholder="Nhập mật khẩu..."
+                  autocomplete="current-password" required>
+                <button type="button" id="login-toggle-pass" class="login-eye-btn" title="Hiện/ẩn mật khẩu">👁️</button>
+              </div>
+            </div>
+
+            <button type="submit" id="login-submit-btn" class="login-btn">
+              <span id="login-btn-text">Đăng nhập</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas hiệu ứng tuyết rơi động -->
+  <canvas id="snow-canvas" class="snow-canvas"></canvas>
+
+  <main class="page" id="main-app" style="display: none;">
+    <header class="top">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">✦</span> <span id="app-brand-name">Language
+          Cappy</span></div><span id="brand-badge" class="badge">AI
+        HỘI THOẠI &amp; SỬA CÂU</span>
+      <div class="header-user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+        <span id="user-info-badge" class="badge"
+          style="background:#e0e7ff; color:#4338ca; font-weight:600; text-transform:none;">👤 <span
+            id="logged-username-display"></span></span>
+        <button id="logout-btn" class="btn-logout" type="button" title="Đăng xuất khỏi tài khoản"
+          style="margin-left:0;">Đăng xuất</button>
+      </div>
+    </header>
+    <section class="intro">
+      <!-- <p class="eyebrow" id="intro-eyebrow">Luyện tập mỗi ngày</p> -->
+      <h1 id="intro-title">Cùng nói chuyện nhé.</h1>
+      <p class="sub" id="intro-sub">Nói hoặc gõ một câu. Cappy sẽ góp ý cách nói trò
+        chuyện cùng bạn.</p>
+    </section>
+    <div class="layout">
+      <aside class="guide card">
+        <h2>Bắt đầu thật đơn giản</h2>
+        <div class="step"><span class="num">1</span>
+          <div><strong>Cappy API key</strong>Tự động tải theo từng ngôn ngữ từ Firebase
+            (<code>api_keys/gemini_english</code> hoặc <code>api_keys/gemini_chinese</code>).</div>
+        </div>
+        <div class="step"><span class="num">2</span>
+          <div><strong>Chọn ngôn ngữ &amp; Nhấn Nói</strong>Chọn Tiếng Anh hoặc Tiếng Hoa, cho phép micro hoặc gõ qua
+            bàn phím Pinyin / bàn phím thiết bị.</div>
+        </div>
+        <div class="step"><span class="num">3</span>
+          <div><strong>Gửi &amp; học</strong>Xem góp ý bằng tiếng Việt, nghe câu gợi ý và tiếp tục hội thoại cùng AI.
+          </div>
+        </div>
+        <div class="tip"><strong>Nhận xét dựa trên chữ</strong>Hãy xem lại câu được nhận dạng trước khi gửi. Demo chưa
+          đánh giá được phát âm, và AI có thể góp ý chưa chính xác.</div>
+        <div class="tip"><strong>Lưu ý về gói miễn phí</strong>Hạn mức tùy project. Nếu bật gói thanh toán, Google có
+          thể tính phí. Bạn cũng có thể gõ thay vì dùng micro.</div>
+      </aside>
+      <section class="chat card" aria-label="Hội thoại tiếng Anh">
+        <div class="chat-head">
+          <div class="profile"><span class="avatar" aria-hidden="true">✦</span>
+            <div><strong id="cappy-name">Language Cappy</strong><small id="cappy-sub">● &nbsp;Hội thoại &amp; góp ý cùng
+                Cappy</small></div>
+          </div>
+          <div class="chat-actions">
+            <button id="open-history-en-btn" class="btn-action-outline" type="button"
+              title="Xem lịch sử trò chuyện Tiếng Anh">📜 LS EN <span id="history-badge-en"
+                class="history-badge">0</span></button>
+            <button id="open-history-zh-btn" class="btn-action-outline" type="button"
+              title="Xem lịch sử trò chuyện Tiếng Hoa">📜 LS 中文 <span id="history-badge-zh"
+                class="history-badge">0</span></button>
+            <button id="new-chat-btn" class="btn-action-primary" type="button" title="Bắt đầu cuộc trò chuyện mới">+ Hội
+              thoại mới</button>
+          </div>
+        </div>
+        <div class="lang-bar">
+          <span class="lang-label">NGÔN NGỮ</span>
+          <button type="button" class="lang-pill active" id="btn-lang-en" data-lang="en">English</button>
+          <button type="button" class="lang-pill" id="btn-lang-zh" data-lang="zh">中文(Tiếng Hoa)</button>
+        </div>
+        <div class="key-config">
+          <div class="key-head">
+            <!-- <label for="api-key">Gemini API key</label> -->
+            <div class="key-actions">
+              <span id="info_connect" class="api-status-badge checking">Kiểm tra kết nối: </span>
+              <span id="api-status-badge" class="api-status-badge checking">Đang kiểm tra kết nối…</span>
+              <button type="button" id="toggle-key-visibility" class="key-action-btn" title="Hiện hoặc ẩn API key">Hiện
+                key</button>
+              <button type="button" id="reset-default-key" class="key-action-btn" title="Tải lại key từ Firebase">Tải
+                lại từ Firebase</button>
+              <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer"
+                style="display: none;">Lấy API key ↗</a>
+            </div>
+          </div>
+          <input class="api-input" id="api-key" type="password"
+            placeholder="Dán API key của bạn vào đây (hoặc dùng mặc định từ Firebase)" autocomplete="new-password"
+            spellcheck="false">
+        </div>
+        <div id="messages" class="messages" role="log" aria-live="polite" aria-label="Nội dung hội thoại">
+          <div class="row bot"><span class="speaker"> Cappy</span>
+            <div class="bubble">Hi! What would you like to talk about today?</div>
+          </div>
+        </div>
+        <form id="chat-form" class="composer">
+          <label class="input-label" for="message">Câu của bạn</label>
+          <div class="input-wrap"><input id="message" type="text" placeholder="Ví dụ: How are you?" autocomplete="off"
+              maxlength="500"><button class="record" id="record" type="button">🎙️ &nbsp;Nói</button><button
+              class="send" id="send" type="submit">Gửi &nbsp;→</button></div>
+
+          <div class="keyboard-mode-bar" id="keyboard-mode-bar" style="display: none;">
+            <button type="button" class="kb-mode-btn active" id="btn-toggle-pinyin-kb"
+              title="Bật hoặc ẩn bàn phím Pinyin">⌨️ Ẩn Pinyin</button>
+            <button type="button" class="kb-mode-btn" id="btn-device-kb" title="Sử dụng bàn phím thiết bị">Dùng bàn phím
+              thiết bị</button>
+          </div>
+          <p class="kb-device-note" id="kb-device-note" style="display: none;">Hãy chọn bàn phím tiếng Hoa trên thiết bị
+            của bạn. Trang không thể tự chuyển bàn phím hệ thống.</p>
+
+          <!-- Bàn phím Pinyin · 简体中文 matching screenshot -->
+          <div id="pinyin-keyboard-panel" class="pinyin-panel" style="display: none;">
+            <div class="pinyin-panel-header">
+              <span class="pinyin-panel-title">Bàn phím Pinyin · 简体中文</span>
+              <button type="button" id="close-pinyin-panel" class="pinyin-close-btn" title="Đóng bàn phím">Đóng
+                ✕</button>
+            </div>
+            <p class="pinyin-panel-sub">Gõ pinyin không dấu, rồi chọn chữ. Ví dụ: nihao → 你好</p>
+
+            <div class="pinyin-display-box">
+              <span class="pinyin-badge">PINYIN</span>
+              <span id="pinyin-current-text" class="pinyin-text"></span>
+              <button type="button" id="pinyin-clear-btn" class="pinyin-clear-btn" style="display: none;">Xóa</button>
+            </div>
+
+            <div id="pinyin-candidates-bar" class="pinyin-candidates-bar"></div>
+
+            <div class="virtual-keyboard">
+              <div class="vk-row">
+                <button type="button" class="vk-key" data-key="q">q</button>
+                <button type="button" class="vk-key" data-key="w">w</button>
+                <button type="button" class="vk-key" data-key="e">e</button>
+                <button type="button" class="vk-key" data-key="r">r</button>
+                <button type="button" class="vk-key" data-key="t">t</button>
+                <button type="button" class="vk-key" data-key="y">y</button>
+                <button type="button" class="vk-key" data-key="u">u</button>
+                <button type="button" class="vk-key" data-key="i">i</button>
+                <button type="button" class="vk-key" data-key="o">o</button>
+                <button type="button" class="vk-key" data-key="p">p</button>
+              </div>
+              <div class="vk-row">
+                <button type="button" class="vk-key" data-key="a">a</button>
+                <button type="button" class="vk-key" data-key="s">s</button>
+                <button type="button" class="vk-key" data-key="d">d</button>
+                <button type="button" class="vk-key" data-key="f">f</button>
+                <button type="button" class="vk-key" data-key="g">g</button>
+                <button type="button" class="vk-key" data-key="h">h</button>
+                <button type="button" class="vk-key" data-key="j">j</button>
+                <button type="button" class="vk-key" data-key="k">k</button>
+                <button type="button" class="vk-key" data-key="l">l</button>
+              </div>
+              <div class="vk-row">
+                <button type="button" class="vk-key" data-key="z">z</button>
+                <button type="button" class="vk-key" data-key="x">x</button>
+                <button type="button" class="vk-key" data-key="c">c</button>
+                <button type="button" class="vk-key" data-key="v">v</button>
+                <button type="button" class="vk-key" data-key="b">b</button>
+                <button type="button" class="vk-key" data-key="n">n</button>
+                <button type="button" class="vk-key" data-key="m">m</button>
+                <button type="button" class="vk-key vk-key-backspace" id="vk-backspace" title="Xóa">⌫</button>
+              </div>
+              <div class="vk-row vk-row-punct">
+                <button type="button" class="vk-key" data-insert="，">，</button>
+                <button type="button" class="vk-key" data-insert="。">。</button>
+                <button type="button" class="vk-key" data-insert="？">？</button>
+                <button type="button" class="vk-key" data-insert="！">！</button>
+              </div>
+            </div>
+
+            <p class="pinyin-foot-note">Chuỗi pinyin được gửi tới Google Input Tools để lấy gợi ý; không gửi Cappy API
+              key.</p>
+          </div>
+
+          <p class="status" id="status" role="status">Nhấn Nói hoặc nhập câu của bạn.</p>
+          <div class="examples"><span>Thử:</span>
+            <div id="sample-list" style="display:inline-flex; gap:6px; flex-wrap:wrap;"><button type="button"
+                class="sample">How are you?</button><button type="button" class="sample">Hello</button><button
+                type="button" class="sample">Yesterday I go to
+                school</button></div>
+          </div>
+        </form>
+      </section>
+    </div>
+    <!-- Modal Lịch sử cuộc trò chuyện -->
+    <div id="history-modal" class="modal-backdrop" role="dialog" aria-modal="true"
+      aria-labelledby="history-modal-title">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h3 id="history-modal-title">📜 Lịch sử cuộc trò chuyện</h3>
+          <div class="modal-head-btns">
+            <button type="button" id="clear-all-sessions-btn" class="btn-modal-clear"
+              title="Xóa danh sách cuộc trò chuyện trên Firebase">🗑️ Xóa danh sách</button>
+            <button type="button" id="close-history-modal" class="btn-modal-close" aria-label="Đóng">✕</button>
+          </div>
+        </div>
+        <div class="history-tabs-bar">
+          <button type="button" class="history-tab-btn active" data-tab="en">🇬🇧 Tiếng Anh (<span
+              id="history-count-en">0</span>)</button>
+          <button type="button" class="history-tab-btn" data-tab="zh">🇨🇳 Tiếng Hoa (<span
+              id="history-count-zh">0</span>)</button>
+          <button type="button" class="history-tab-btn" data-tab="all">Tất cả (<span
+              id="history-count-all">0</span>)</button>
+        </div>
+        <div class="modal-body">
+          <div id="history-list" class="history-list"></div>
+        </div>
+      </div>
+    </div>
+    <p class="foot">Mr. Cappy made </p>
+  </main>
+
+  <!-- Thư viện jQuery và mã nguồn logic ứng dụng -->
+  <script src="jquery.min.js"></script>
+  <script src="languagecappy.js"></script>
+</body>
+
+</html>
