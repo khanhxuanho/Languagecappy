@@ -298,7 +298,7 @@ $(function () {
   }
 
   async function getUserInt(username) {
-    const stored = sessionStorage.getItem('cappy_user_int');
+    const stored = localStorage.getItem('cappy_user_int') || sessionStorage.getItem('cappy_user_int');
     if (stored !== null && stored !== undefined && stored !== '') {
       const parsed = parseInt(stored, 10);
       if (!isNaN(parsed)) return parsed;
@@ -310,7 +310,7 @@ $(function () {
         const uData = await res.json();
         if (uData && (uData.int !== undefined && uData.int !== null)) {
           const uInt = parseInt(uData.int, 10);
-          sessionStorage.setItem('cappy_user_int', String(uInt));
+          localStorage.setItem('cappy_user_int', String(uInt));
           return uInt;
         }
       }
@@ -329,7 +329,7 @@ $(function () {
     $badge.removeClass('success error').addClass('checking').text('Đang lấy API key từ Firebase…');
 
     // 1. Kiểm tra tài khoản đăng nhập và lấy key theo int từ api_key_gemnini
-    const loggedUser = sessionStorage.getItem('cappy_logged_user');
+    const loggedUser = localStorage.getItem('cappy_logged_user') || sessionStorage.getItem('cappy_logged_user');
     const userInt = await getUserInt(loggedUser);
 
     if (userInt !== null && !isNaN(userInt)) {
@@ -462,7 +462,7 @@ $(function () {
   let allSessions = {};
 
   function getLoggedInUserKey() {
-    const user = sessionStorage.getItem('cappy_logged_user');
+    const user = localStorage.getItem('cappy_logged_user') || sessionStorage.getItem('cappy_logged_user');
     if (!user) return '';
     return String(user).trim().toLowerCase().replace(/[.#$\[\]\/]/g, '_');
   }
@@ -1498,8 +1498,10 @@ $(function () {
     $loginScreen.fadeOut(250, function () {
       $mainApp.fadeIn(250);
     });
+    localStorage.setItem('cappy_logged_user', username);
     sessionStorage.setItem('cappy_logged_user', username);
     if (userInt !== undefined && userInt !== null) {
+      localStorage.setItem('cappy_user_int', String(userInt));
       sessionStorage.setItem('cappy_user_int', String(userInt));
     }
     $('#logged-username-display').text(username);
@@ -1563,6 +1565,8 @@ $(function () {
   // Nút Đăng xuất
   $logoutBtn.on('click', function () {
     if (confirm('Bạn có chắc muốn đăng xuất khỏi Cappy?')) {
+      localStorage.removeItem('cappy_logged_user');
+      localStorage.removeItem('cappy_user_int');
       sessionStorage.removeItem('cappy_logged_user');
       sessionStorage.removeItem('cappy_user_int');
       allSessions = {};
@@ -1579,7 +1583,7 @@ $(function () {
   });
 
   // Kiểm tra trạng thái đăng nhập khi load trang
-  const loggedUser = sessionStorage.getItem('cappy_logged_user');
+  const loggedUser = localStorage.getItem('cappy_logged_user') || sessionStorage.getItem('cappy_logged_user');
   if (loggedUser) {
     $('#logged-username-display').text(loggedUser);
     $loginScreen.hide();
