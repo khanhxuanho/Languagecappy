@@ -430,7 +430,7 @@ $(function () {
       const testUrl = 'https://generativelanguage.googleapis.com/v1beta/models/' + MODEL + '?key=' + encodeURIComponent(apiKey);
       const res = await fetch(testUrl);
       if (res.ok) {
-        $badge.removeClass('checking error').addClass('success').text('✓ Đã kết nối Cappy (' + langName + ')');
+        $badge.removeClass('checking error').addClass('success').text('✓ Đã kết nối');
         setStatus('✓ Đã kết nối API Cappy ' + langName + ' thành công! Sẵn sàng trò chuyện.');
         return true;
       } else {
@@ -1444,14 +1444,23 @@ $(function () {
     checkGeminiConnection($key.val());
   });
 
-  // Hiện / ẩn API key (dùng native property để hỗ trợ tốt nhất trên mọi trình duyệt)
+  // Hiện / ẩn dòng API key và hiển thị trực tiếp mã key
   $(document).on('click', '#toggle-key-visibility', function (e) {
     e.preventDefault();
     const inputEl = document.getElementById('api-key');
     if (!inputEl) return;
-    const isPassword = inputEl.type === 'password';
-    inputEl.type = isPassword ? 'text' : 'password';
-    $(this).text(isPassword ? 'Ẩn key' : 'Hiện key');
+    const isHidden = inputEl.style.display === 'none' || $(inputEl).is(':hidden');
+
+    if (isHidden) {
+      inputEl.type = 'text';
+      $(inputEl).slideDown(150);
+      $(this).text('Ẩn key');
+    } else {
+      $(inputEl).slideUp(150, function () {
+        inputEl.type = 'password';
+      });
+      $(this).text('Hiện key');
+    }
   });
 
   // Nút tải lại key từ Firebase
